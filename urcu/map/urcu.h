@@ -34,7 +34,7 @@
 
 /* Mapping macros to allow multiple flavors in a single binary. */
 
-#if !defined(RCU_MEMBARRIER) && !defined(RCU_SIGNAL) && !defined(RCU_MB)
+#if !defined(RCU_MEMBARRIER) && !defined(RCU_SIGNAL) && !defined(RCU_MB) && !defined(RCU_TLB)
 #define RCU_MEMBARRIER
 #endif
 
@@ -166,6 +166,48 @@
 #define rcu_defer_exit			rcu_defer_exit_mb
 
 #define rcu_flavor			rcu_flavor_mb
+
+#elif defined(RCU_TLB)
+
+#define rcu_read_lock			rcu_read_lock_tlb
+#define _rcu_read_lock			_rcu_read_lock_tlb
+#define rcu_read_unlock			rcu_read_unlock_tlb
+#define _rcu_read_unlock		_rcu_read_unlock_tlb
+#define rcu_read_ongoing		rcu_read_ongoing_tlb
+#define _rcu_read_ongoing		_rcu_read_ongoing_tlb
+#define rcu_register_thread		rcu_register_thread_tlb
+#define rcu_unregister_thread		rcu_unregister_thread_tlb
+#define rcu_init			rcu_init_tlb
+#define rcu_exit			rcu_exit_tlb
+#define synchronize_rcu			synchronize_rcu_tlb
+#define rcu_reader			rcu_reader_tlb
+#define rcu_gp				rcu_gp_tlb
+
+#define get_cpu_call_rcu_data		get_cpu_call_rcu_data_tlb
+#define get_call_rcu_thread		get_call_rcu_thread_tlb
+#define create_call_rcu_data		create_call_rcu_data_tlb
+#define set_cpu_call_rcu_data		set_cpu_call_rcu_data_tlb
+#define get_default_call_rcu_data	get_default_call_rcu_data_tlb
+#define get_call_rcu_data		get_call_rcu_data_tlb
+#define get_thread_call_rcu_data	get_thread_call_rcu_data_tlb
+#define set_thread_call_rcu_data	set_thread_call_rcu_data_tlb
+#define create_all_cpu_call_rcu_data	create_all_cpu_call_rcu_data_tlb
+#define free_all_cpu_call_rcu_data	free_all_cpu_call_rcu_data_tlb
+#define call_rcu			call_rcu_tlb
+#define call_rcu_data_free		call_rcu_data_free_tlb
+#define call_rcu_before_fork		call_rcu_before_fork_tlb
+#define call_rcu_after_fork_parent	call_rcu_after_fork_parent_tlb
+#define call_rcu_after_fork_child	call_rcu_after_fork_child_tlb
+#define rcu_barrier			rcu_barrier_tlb
+
+#define defer_rcu			defer_rcu_tlb
+#define rcu_defer_register_thread	rcu_defer_register_thread_tlb
+#define rcu_defer_unregister_thread	rcu_defer_unregister_thread_tlb
+#define rcu_defer_barrier		rcu_defer_barrier_tlb
+#define rcu_defer_barrier_thread	rcu_defer_barrier_thread_tlb
+#define rcu_defer_exit			rcu_defer_exit_tlb
+
+#define rcu_flavor			rcu_flavor_tlb
 
 #else
 

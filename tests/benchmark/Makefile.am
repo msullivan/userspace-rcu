@@ -5,12 +5,15 @@ AM_CFLAGS=-I$(top_srcdir) -I$(top_builddir) -I$(top_srcdir)/tests/common -g
 
 noinst_PROGRAMS = test_urcu test_urcu_dynamic_link test_urcu_timing \
 	test_urcu_signal test_urcu_signal_dynamic_link test_urcu_signal_timing \
+	test_urcu_tlb test_urcu_tlb_dynamic_link test_urcu_tlb_timing \
         test_rwlock_timing test_rwlock test_perthreadlock_timing \
-        test_perthreadlock test_urcu_yield test_urcu_signal_yield test_urcu_mb \
+        test_perthreadlock test_urcu_yield test_urcu_signal_yield \
+	test_urcu_tlb_yield test_urcu_mb \
         test_urcu_qsbr_timing test_urcu_qsbr \
 	test_mutex test_looplen test_urcu_gc test_urcu_signal_gc \
-	test_urcu_lgc \
+	test_urcu_tlb_gc test_urcu_lgc \
         test_urcu_mb_gc test_urcu_qsbr_gc test_urcu_qsbr_lgc test_urcu_signal_lgc \
+	test_urcu_tlb_lgc \
         test_urcu_mb_lgc test_urcu_qsbr_dynamic_link test_urcu_defer \
         test_urcu_assign test_urcu_assign_dynamic_link \
         test_urcu_bp test_urcu_bp_dynamic_link test_cycles_per_loop \
@@ -27,6 +30,7 @@ URCU_LIB=$(top_builddir)/liburcu.la
 URCU_QSBR_LIB=$(top_builddir)/liburcu-qsbr.la
 URCU_MB_LIB=$(top_builddir)/liburcu-mb.la
 URCU_SIGNAL_LIB=$(top_builddir)/liburcu-signal.la
+URCU_TLB_LIB=$(top_builddir)/liburcu-tlb.la
 URCU_BP_LIB=$(top_builddir)/liburcu-bp.la
 URCU_CDS_LIB=$(top_builddir)/liburcu-cds.la
 
@@ -78,6 +82,23 @@ test_urcu_signal_yield_SOURCES = test_urcu.c
 test_urcu_signal_yield_LDADD = $(URCU_SIGNAL_LIB) $(DEBUG_YIELD_LIB)
 test_urcu_signal_yield_CFLAGS = -DRCU_SIGNAL -DDEBUG_YIELD $(AM_CFLAGS)
 
+test_urcu_tlb_SOURCES = test_urcu.c
+test_urcu_tlb_LDADD = $(URCU_TLB_LIB)
+test_urcu_tlb_CFLAGS = -DRCU_TLB $(AM_CFLAGS)
+
+test_urcu_tlb_dynamic_link_SOURCES = test_urcu.c
+test_urcu_tlb_dynamic_link_LDADD = $(URCU_TLB_LIB)
+test_urcu_tlb_dynamic_link_CFLAGS = -DRCU_TLB -DDYNAMIC_LINK_TEST \
+					$(AM_CFLAGS)
+
+test_urcu_tlb_timing_SOURCES = test_urcu_timing.c
+test_urcu_tlb_timing_LDADD = $(URCU_TLB_LIB)
+test_urcu_tlb_timing_CFLAGS= -DRCU_TLB $(AM_CFLAGS)
+
+test_urcu_tlb_yield_SOURCES = test_urcu.c
+test_urcu_tlb_yield_LDADD = $(URCU_TLB_LIB) $(DEBUG_YIELD_LIB)
+test_urcu_tlb_yield_CFLAGS = -DRCU_TLB -DDEBUG_YIELD $(AM_CFLAGS)
+
 test_rwlock_timing_SOURCES = test_rwlock_timing.c
 test_rwlock_timing_LDADD = $(URCU_SIGNAL_LIB)
 
@@ -101,6 +122,10 @@ test_urcu_signal_gc_SOURCES = test_urcu_gc.c
 test_urcu_signal_gc_LDADD = $(URCU_SIGNAL_LIB)
 test_urcu_signal_gc_CFLAGS = -DRCU_SIGNAL $(AM_CFLAGS)
 
+test_urcu_tlb_gc_SOURCES = test_urcu_gc.c
+test_urcu_tlb_gc_LDADD = $(URCU_TLB_LIB)
+test_urcu_tlb_gc_CFLAGS = -DRCU_TLB $(AM_CFLAGS)
+
 test_urcu_mb_gc_SOURCES = test_urcu_gc.c
 test_urcu_mb_gc_LDADD = $(URCU_MB_LIB)
 test_urcu_mb_gc_CFLAGS = -DRCU_MB $(AM_CFLAGS)
@@ -119,6 +144,10 @@ test_urcu_lgc_CFLAGS = -DTEST_LOCAL_GC $(AM_CFLAGS)
 test_urcu_signal_lgc_SOURCES = test_urcu_gc.c
 test_urcu_signal_lgc_LDADD = $(URCU_SIGNAL_LIB)
 test_urcu_signal_lgc_CFLAGS = -DRCU_SIGNAL -DTEST_LOCAL_GC $(AM_CFLAGS)
+
+test_urcu_tlb_lgc_SOURCES = test_urcu_gc.c
+test_urcu_tlb_lgc_LDADD = $(URCU_TLB_LIB)
+test_urcu_tlb_lgc_CFLAGS = -DRCU_TLB -DTEST_LOCAL_GC $(AM_CFLAGS)
 
 test_urcu_mb_lgc_SOURCES = test_urcu_gc.c
 test_urcu_mb_lgc_LDADD = $(URCU_MB_LIB)

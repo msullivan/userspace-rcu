@@ -6,6 +6,7 @@ AM_CFLAGS=-I$(top_srcdir) -I$(top_builddir) -I$(top_srcdir)/tests/common -g
 noinst_PROGRAMS = test_urcu_fork \
 	rcutorture_urcu \
 	rcutorture_urcu_signal \
+	rcutorture_urcu_tlb \
 	rcutorture_urcu_mb \
 	rcutorture_urcu_bp \
 	rcutorture_urcu_qsbr
@@ -17,6 +18,7 @@ URCU_LIB=$(top_builddir)/liburcu.la
 URCU_QSBR_LIB=$(top_builddir)/liburcu-qsbr.la
 URCU_MB_LIB=$(top_builddir)/liburcu-mb.la
 URCU_SIGNAL_LIB=$(top_builddir)/liburcu-signal.la
+URCU_TLB_LIB=$(top_builddir)/liburcu-tlb.la
 URCU_BP_LIB=$(top_builddir)/liburcu-bp.la
 URCU_CDS_LIB=$(top_builddir)/liburcu-cds.la
 
@@ -39,6 +41,10 @@ rcutorture_urcu_signal_SOURCES = urcutorture.c
 rcutorture_urcu_signal_CFLAGS = -DRCU_SIGNAL $(AM_CFLAGS)
 rcutorture_urcu_signal_LDADD = $(URCU_SIGNAL_LIB)
 
+rcutorture_urcu_tlb_SOURCES = urcutorture.c
+rcutorture_urcu_tlb_CFLAGS = -DRCU_TLB $(AM_CFLAGS)
+rcutorture_urcu_tlb_LDADD = $(URCU_TLB_LIB)
+
 rcutorture_urcu_bp_SOURCES = urcutorture.c
 rcutorture_urcu_bp_CFLAGS = -DRCU_BP $(AM_CFLAGS)
 rcutorture_urcu_bp_LDADD = $(URCU_BP_LIB)
@@ -53,6 +59,7 @@ regtest:
 	./test_urcu_fork
 	./rcutorture_urcu
 	./rcutorture_urcu_signal
+	./rcutorture_urcu_tlb
 	./rcutorture_urcu_mb
 	./rcutorture_urcu_bp
 	./rcutorture_urcu_qsbr

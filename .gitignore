@@ -14,6 +14,7 @@ tests/regression/rcutorture_urcu_bp
 tests/regression/rcutorture_urcu_mb
 tests/regression/rcutorture_urcu_qsbr
 tests/regression/rcutorture_urcu_signal
+tests/regression/rcutorture_urcu_tlb
 tests/regression/test_urcu_fork
 
 tests/benchmark/test_rwlock_timing
@@ -71,6 +72,14 @@ tests/benchmark/test_urcu_lfs_rcu
 tests/benchmark/test_urcu_lfs_rcu_dynlink
 tests/benchmark/test_urcu_wfcq
 tests/benchmark/test_urcu_wfcq_dynlink
+tests/benchmark/test_urcu_tlb
+tests/benchmark/test_urcu_tlb_dynamic_link
+tests/benchmark/test_urcu_tlb_gc
+tests/benchmark/test_urcu_tlb_lgc
+tests/benchmark/test_urcu_tlb_timing
+tests/benchmark/test_urcu_tlb_yield
+
+
 
 tests/benchmark/*.log
 *.so
@@ -155,3 +164,4 @@ liburcu-cds.pc
 liburcu-qsbr.pc
 liburcu-mb.pc
 liburcu-signal.pc
+liburcu-tlb.pc

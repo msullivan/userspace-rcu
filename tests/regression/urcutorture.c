@@ -15,6 +15,9 @@
 #ifdef RCU_SIGNAL
 #include <urcu.h>
 #endif
+#ifdef RCU_TLB
+#include <urcu.h>
+#endif
 #ifdef RCU_MB
 #include <urcu.h>
 #endif

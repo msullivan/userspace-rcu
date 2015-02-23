@@ -48,7 +48,7 @@ extern "C" {
 #endif 
 
 /* Default is RCU_MEMBARRIER */
-#if !defined(RCU_MEMBARRIER) && !defined(RCU_MB) && !defined(RCU_SIGNAL)
+#if !defined(RCU_MEMBARRIER) && !defined(RCU_MB) && !defined(RCU_SIGNAL) && !defined(RCU_TLB)
 #define RCU_MEMBARRIER
 #endif
 

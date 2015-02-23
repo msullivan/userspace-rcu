@@ -51,7 +51,7 @@ RCULFHASH = rculfhash.c rculfhash-mm-order.c rculfhash-mm-chunk.c \
 lib_LTLIBRARIES = liburcu-common.la \
 		liburcu.la liburcu-qsbr.la \
 		liburcu-mb.la liburcu-signal.la liburcu-bp.la \
-		liburcu-cds.la
+		liburcu-cds.la liburcu-tlb.la
 
 #
 # liburcu-common contains wait-free queues (needed by call_rcu) as well
@@ -73,6 +73,10 @@ liburcu_signal_la_SOURCES = urcu.c urcu-pointer.c $(COMPAT)
 liburcu_signal_la_CFLAGS = -DRCU_SIGNAL
 liburcu_signal_la_LIBADD = liburcu-common.la
 
+liburcu_tlb_la_SOURCES = urcu.c urcu-pointer.c $(COMPAT)
+liburcu_tlb_la_CFLAGS = -DRCU_TLB
+liburcu_tlb_la_LIBADD = liburcu-common.la
+
 liburcu_bp_la_SOURCES = urcu-bp.c urcu-pointer.c $(COMPAT)
 liburcu_bp_la_LIBADD = liburcu-common.la
 
@@ -82,7 +86,7 @@ liburcu_cds_la_LIBADD = liburcu-common.la
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = liburcu-cds.pc liburcu.pc liburcu-bp.pc liburcu-qsbr.pc \
-	liburcu-signal.pc liburcu-mb.pc
+	liburcu-signal.pc liburcu-tlb.pc liburcu-mb.pc
 
 dist_doc_DATA = README.md ChangeLog
 

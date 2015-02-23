@@ -186,7 +186,7 @@ AM_CONDITIONAL([COMPAT_ARCH], [test "x$SUBARCHTYPE" = "xx86compat"])
 AM_CONDITIONAL([NO_SHARED], [test "x$enable_shared" = "xno"])
 
 # smp-support configure option
-AC_ARG_ENABLE([smp-support], 
+AC_ARG_ENABLE([smp-support],
 	AS_HELP_STRING([--disable-smp-support], [Disable SMP support. Warning: only use this on uniprocessor systems. [default=enabled]]),
 	[def_smp_support=$enableval],
 	[def_smp_support="yes"])
@@ -324,6 +324,7 @@ AC_CONFIG_FILES([
 	liburcu-qsbr.pc
 	liburcu-mb.pc
 	liburcu-signal.pc
+	liburcu-tlb.pc
 ])
 AC_OUTPUT
 
