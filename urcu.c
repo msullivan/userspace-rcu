@@ -35,6 +35,7 @@
 #include <string.h>
 #include <errno.h>
 #include <poll.h>
+#include <sys/mman.h>
 
 #include "urcu/wfcqueue.h"
 #include "urcu/map/urcu.h"
@@ -83,6 +84,16 @@
 #ifdef RCU_MEMBARRIER
 static int init_done;
 int rcu_has_sys_membarrier;
+
+void __attribute__((constructor)) rcu_init(void);
+#endif
+
+#ifdef RCU_TLB
+static int init_done;
+/* We use a silly trick:
+ * removing permission flags with mprotect() will force a TLB shootdown,
+ * which should force barriers. */
+static void *dummy_barrier_page;
 
 void __attribute__((constructor)) rcu_init(void);
 #endif
@@ -155,6 +166,24 @@ static void smp_mb_master(int group)
 		(void) membarrier(MEMBARRIER_EXPEDITED);
 	else
 		cmm_smp_mb();
+}
+#endif
+
+#ifdef RCU_TLB
+/* Force a barrier using a TLB shootdown */
+static void tlb_barrier() {
+	/* Make the dummy page writable, then take it away.
+	 * We do this because there is really no need to TLB shootdown
+	 * when /adding/ permissions. */
+	if (mprotect(dummy_barrier_page, 1, PROT_READ|PROT_WRITE) < 0 ||
+	    mprotect(dummy_barrier_page, 1, PROT_READ) < 0) {
+		urcu_die(errno);
+	}
+}
+
+static void smp_mb_master(int group)
+{
+	tlb_barrier();
 }
 #endif
 
@@ -459,6 +488,25 @@ void rcu_unregister_thread(void)
 	cds_list_del(&URCU_TLS(rcu_reader).node);
 	mutex_unlock(&rcu_gp_lock);
 }
+
+#ifdef RCU_TLB
+void rcu_init(void)
+{
+	if (init_done)
+		return;
+	init_done = 1;
+
+	/* Allocate a dummy page that we can use. */
+	void *page = mmap(NULL, 1, PROT_READ, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+	if (page == MAP_FAILED) urcu_die(errno);
+
+	/* Lock the memory so it can't get paged out. If it gets paged
+	 * out, changing its protection won't accomplish anything. */
+	if (mlock(page, 1) < 0) urcu_die(errno);
+
+	dummy_barrier_page = page;
+}
+#endif
 
 #ifdef RCU_MEMBARRIER
 void rcu_init(void)

@@ -112,6 +112,13 @@ static inline void smp_mb_slave(int group)
 }
 #endif
 
+#ifdef RCU_TLB
+static inline void smp_mb_slave(int group)
+{
+	cmm_barrier();
+}
+#endif
+
 #ifdef RCU_MB
 static inline void smp_mb_slave(int group)
 {
